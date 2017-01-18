@@ -1,6 +1,6 @@
 Name     : runc
 Version  : 50a19c6ff828c58e5dab13830bd3dacde268afe5
-Release  : 9
+Release  : 10
 URL      : https://github.com/opencontainers/runc/archive/50a19c6ff828c58e5dab13830bd3dacde268afe5.tar.gz
 Source0  : https://github.com/opencontainers/runc/archive/50a19c6ff828c58e5dab13830bd3dacde268afe5.tar.gz
 Summary  : CLI tool for spawning and running containers according to the OCF specification.
