@@ -1,8 +1,8 @@
 Name     : runc
-Version  : 9c2d8d184e5da67c95d601382adf14862e4f2228 
-Release  : 13
-URL      : https://github.com/docker/runc/archive/9c2d8d184e5da67c95d601382adf14862e4f2228.tar.gz
-Source0  : https://github.com/docker/runc/archive/9c2d8d184e5da67c95d601382adf14862e4f2228.tar.gz
+Version  : 0
+Release  : 15
+URL      : https://github.com/opencontainers/runc/archive/3f2f8b84a77f73d38244dd690525642a72156c64.tar.gz
+Source0  : https://github.com/opencontainers/runc/archive/3f2f8b84a77f73d38244dd690525642a72156c64.tar.gz
 Summary  : CLI tool for spawning and running containers according to the OCF specification.
 Group    : Development/Tools
 License  : Apache-2.0
@@ -10,8 +10,9 @@ BuildRequires : go
 BuildRequires : glibc-staticdev
 BuildRequires : libseccomp-dev
 
-%global gopath /usr/lib/golang
 %global library_path github.com/opencontainers/
+%global commit 3f2f8b84a77f73d38244dd690525642a72156c64
+%global goroot /usr/lib/golang
 
 %description
 runc is a CLI tool for spawning and running containers according to the OCF specification.
@@ -24,24 +25,26 @@ Group: Development
 dev components for the runc package.
 
 %prep
-%setup -q -n runc-9c2d8d184e5da67c95d601382adf14862e4f2228 
+%setup -q -n runc-%{commit}
 
 %build
-mkdir -p src/github.com/opencontainers
-ln -s $(pwd) src/github.com/opencontainers/runc
-export GOPATH=$(pwd):%{gopath}
+export GOPATH=/go AUTO_GOPATH=1
+mkdir -p /go/src/github.com/opencontainers
+ln -s /builddir/build/BUILD/runc-%{commit} /go/src/github.com/opencontainers/runc
+pushd /go/src/github.com/opencontainers/runc
 make V=1 %{?_smp_mflags}
+popd
 
 %install
 rm -rf %{buildroot}
 install -d -p %{buildroot}%{_bindir}
 install -p -m 755 %{name} %{buildroot}%{_bindir}
 # Copy all *.go, *.s and *.proto files
-install -d -p %{buildroot}%{gopath}/src/%{library_path}/
+install -d -p %{buildroot}%{goroot}/src/%{library_path}/
 for ext in go s proto; do
 	for file in $(find . -iname "*.$ext" | grep -v "^./Godeps") ; do
-		install -d -p %{buildroot}%{gopath}/src/%{library_path}/$(dirname $file)
-		cp -pav $file %{buildroot}%{gopath}/src/%{library_path}/$file
+		install -d -p %{buildroot}%{goroot}/src/%{library_path}/$(dirname $file)
+		cp -pav $file %{buildroot}%{goroot}/src/%{library_path}/$file
 	done
 done
 
@@ -51,4 +54,4 @@ done
 
 %files dev
 %defattr(-,root,root,-)
-%{gopath}/src/%{library_path}/*
+%{goroot}/src/%{library_path}/*
