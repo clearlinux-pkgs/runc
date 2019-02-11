@@ -10,6 +10,9 @@ BuildRequires : go
 BuildRequires : glibc-staticdev
 BuildRequires : libseccomp-dev
 
+Patch1: CVE-2019-5736.patch
+
+
 %global library_path github.com/opencontainers/
 %global goroot /usr/lib/golang
 
@@ -25,6 +28,7 @@ dev components for the runc package.
 
 %prep
 %setup -q -n runc-1.0.0-rc5
+%patch1 -p1
 
 %build
 export GOPATH=/go AUTO_GOPATH=1
