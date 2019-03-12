@@ -40,8 +40,8 @@ popd
 
 %install
 rm -rf %{buildroot}
-install -d -p %{buildroot}%{_bindir}
-install -p -m 755 %{name} %{buildroot}%{_bindir}
+install -d -p %{buildroot}/usr/bin
+install -p -m 755 runc %{buildroot}/usr/bin
 # Copy all *.go, *.s and *.proto files
 install -d -p %{buildroot}%{goroot}/src/%{library_path}/
 for ext in go s proto; do
@@ -53,7 +53,7 @@ done
 
 %files
 %defattr(-,root,root,-)
-%{_bindir}/%{name}
+/usr/bin/runc
 
 %files dev
 %defattr(-,root,root,-)
