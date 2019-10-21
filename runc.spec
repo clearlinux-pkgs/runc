@@ -1,6 +1,6 @@
 Name     : runc
 Version  : 0
-Release  : 27
+Release  : 28
 URL      : https://github.com/opencontainers/runc/archive/v1.0.0-rc8.tar.gz
 Source0  : https://github.com/opencontainers/runc/archive/v1.0.0-rc8.tar.gz
 Summary  : CLI tool for spawning and running containers according to the OCF specification.
@@ -9,6 +9,8 @@ License  : Apache-2.0
 BuildRequires : go
 BuildRequires : glibc-staticdev
 BuildRequires : libseccomp-dev
+
+Patch01: CVE-2019-16884.patch
 
 %global library_path github.com/opencontainers/
 %global goroot /usr/lib/golang
@@ -25,6 +27,8 @@ dev components for the runc package.
 
 %prep
 %setup -q -n runc-1.0.0-rc8
+
+%patch01 -p1
 
 %build
 export GOPATH=/go AUTO_GOPATH=1
