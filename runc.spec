@@ -1,6 +1,6 @@
 Name     : runc
 Version  : 0
-Release  : 28
+Release  : 29
 URL      : https://github.com/opencontainers/runc/archive/v1.0.0-rc8.tar.gz
 Source0  : https://github.com/opencontainers/runc/archive/v1.0.0-rc8.tar.gz
 Summary  : CLI tool for spawning and running containers according to the OCF specification.
@@ -31,10 +31,10 @@ dev components for the runc package.
 %patch01 -p1
 
 %build
-export GOPATH=/go AUTO_GOPATH=1
-mkdir -p /go/src/github.com/opencontainers
-ln -s /builddir/build/BUILD/runc-1.0.0-rc8 /go/src/github.com/opencontainers/runc
-pushd /go/src/github.com/opencontainers/runc
+export GOPATH=$HOME/go AUTO_GOPATH=1
+mkdir -p $HOME/go/src/github.com/opencontainers
+ln -s /builddir/build/BUILD/runc-1.0.0-rc8 $HOME/go/src/github.com/opencontainers/runc
+pushd $HOME/go/src/github.com/opencontainers/runc
 make V=1 %{?_smp_mflags}
 popd
 
