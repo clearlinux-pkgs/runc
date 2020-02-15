@@ -12,7 +12,7 @@ BuildRequires : libseccomp-dev
 
 %global library_path github.com/opencontainers/
 %global goroot /usr/lib/golang
-%global runc_version 1.0.0-rc9
+%global runc_version 1.0.0-rc10
 
 %description
 runc is a CLI tool for spawning and running containers according to the OCF specification.
