@@ -1,8 +1,8 @@
 Name     : runc
-Version  : 1.0.0.rc95
-Release  : 44
-URL      : https://github.com/opencontainers/runc/releases/download/v1.0.0-rc95/runc.tar.xz
-Source0  : https://github.com/opencontainers/runc/releases/download/v1.0.0-rc95/runc.tar.xz
+Version  : 1.0.0
+Release  : 45
+URL      : https://github.com/opencontainers/runc/releases/download/v1.0.0/runc.tar.xz
+Source0  : https://github.com/opencontainers/runc/releases/download/v1.0.0/runc.tar.xz
 Summary  : CLI tool for spawning and running containers according to the OCF specification.
 Group    : Development/Tools
 License  : Apache-2.0
@@ -12,7 +12,7 @@ BuildRequires : libseccomp-dev
 
 %global library_path github.com/opencontainers/
 %global goroot /usr/lib/golang
-%global runc_version 1.0.0-rc95
+%global runc_version %{version}
 
 %description
 runc is a CLI tool for spawning and running containers according to the OCF specification.
