@@ -4,12 +4,13 @@
 #
 Name     : runc
 Version  : 1.1.0
-Release  : 58
+Release  : 59
 URL      : https://github.com/opencontainers/runc/releases/download/v1.1.0/runc.tar.xz
 Source0  : https://github.com/opencontainers/runc/releases/download/v1.1.0/runc.tar.xz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : Apache-2.0 BSD-2-Clause BSD-3-Clause MIT
+Requires: runc-bin = %{version}-%{release}
 Requires: runc-license = %{version}-%{release}
 BuildRequires : buildreq-golang
 BuildRequires : pkgconfig(libseccomp)
@@ -21,6 +22,15 @@ BuildRequires : pkgconfig(libseccomp)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/588/badge)](https://bestpractices.coreinfrastructure.org/projects/588)
 [![gha/validate](https://github.com/opencontainers/runc/workflows/validate/badge.svg)](https://github.com/opencontainers/runc/actions?query=workflow%3Avalidate)
 [![gha/ci](https://github.com/opencontainers/runc/workflows/ci/badge.svg)](https://github.com/opencontainers/runc/actions?query=workflow%3Aci)
+
+%package bin
+Summary: bin components for the runc package.
+Group: Binaries
+Requires: runc-license = %{version}-%{release}
+
+%description bin
+bin components for the runc package.
+
 
 %package license
 Summary: license components for the runc package.
@@ -39,7 +49,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1648238387
+export SOURCE_DATE_EPOCH=1648239409
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -52,7 +62,7 @@ make  %{?_smp_mflags}  PREFIX=/usr
 
 
 %install
-export SOURCE_DATE_EPOCH=1648238387
+export SOURCE_DATE_EPOCH=1648239409
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/runc
 cp %{_builddir}/runc-1.1.0/LICENSE %{buildroot}/usr/share/package-licenses/runc/8ff574408142cd6bbb2a1b83302de24cb7b35e8b
@@ -79,10 +89,14 @@ cp %{_builddir}/runc-1.1.0/vendor/github.com/vishvananda/netns/LICENSE %{buildro
 cp %{_builddir}/runc-1.1.0/vendor/golang.org/x/net/LICENSE %{buildroot}/usr/share/package-licenses/runc/d6a5f1ecaedd723c325a2063375b3517e808a2b5
 cp %{_builddir}/runc-1.1.0/vendor/golang.org/x/sys/LICENSE %{buildroot}/usr/share/package-licenses/runc/d6a5f1ecaedd723c325a2063375b3517e808a2b5
 cp %{_builddir}/runc-1.1.0/vendor/google.golang.org/protobuf/LICENSE %{buildroot}/usr/share/package-licenses/runc/74850a25a5319bdddc0d998eb8926c18bada282b
-%make_install
+%make_install PREFIX=/usr
 
 %files
 %defattr(-,root,root,-)
+
+%files bin
+%defattr(-,root,root,-)
+/usr/bin/runc
 
 %files license
 %defattr(0644,root,root,0755)
