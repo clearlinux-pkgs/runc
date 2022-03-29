@@ -1,0 +1,3 @@
+runc is a CLI tool for spawning and running containers on Linux according to
+the OCI specification. It is a low level tool not designed with an end user in
+mind. It is mostly employed by other higher level container software.
