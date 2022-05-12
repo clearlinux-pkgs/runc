@@ -10,9 +10,8 @@ git pull --ff-only > /dev/null
 LATEST_VER=$(git ls-remote $REPO \
 	| grep -o 'refs/tags/.*[0-9]$' \
 	| sed 's|.*/v||' \
-	| sed 's|-rc|~|' \
+	| sed '/-rc/d' \
 	| sort --version-sort \
-	| sed 's|~|.rc|' \
 	| tail -1)
 
 if [[ -z "$LATEST_VER" ]]; then
