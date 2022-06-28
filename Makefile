@@ -1,5 +1,5 @@
 PKG_NAME := runc
-URL = https://github.com/opencontainers/runc/releases/download/v1.1.2/runc.tar.xz
+URL = https://github.com/opencontainers/runc/releases/download/v1.1.3/runc.tar.xz
 ARCHIVES = 
 
 include ../common/Makefile.common
