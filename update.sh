@@ -1,6 +1,5 @@
 #!/bin/bash
-
-set -euo pipefail
+set -e -o pipefail -u
 
 PKG=runc
 REPO=https://github.com/opencontainers/runc
@@ -23,7 +22,7 @@ CURRENT_VER=$(grep "^Version" $PKG.spec | awk '{ print $3 }')
 
 if [[ "$LATEST_VER" = "$CURRENT_VER" ]]; then
 	echo "Already up to date at version $CURRENT_VER."
-	exit 2
+	exit
 fi
 
 # The tarball and sig are unversioned, so remove them in order for autospec to
