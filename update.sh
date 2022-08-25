@@ -3,6 +3,7 @@ set -e -o pipefail -u
 
 PKG=runc
 REPO=https://github.com/opencontainers/runc
+NO_KOJI="${NO_KOJI:-}"
 
 git pull --ff-only > /dev/null
 
