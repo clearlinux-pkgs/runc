@@ -6,11 +6,11 @@
 # Source0 file verified with key 0x9E18AA267DDB8DB4 (asarai@suse.de)
 #
 Name     : runc
-Version  : 1.1.7
-Release  : 83
-URL      : https://github.com/opencontainers/runc/releases/download/v1.1.7/runc.tar.xz
-Source0  : https://github.com/opencontainers/runc/releases/download/v1.1.7/runc.tar.xz
-Source1  : https://github.com/opencontainers/runc/releases/download/v1.1.7/runc.tar.xz.asc
+Version  : 1.1.8
+Release  : 84
+URL      : https://github.com/opencontainers/runc/releases/download/v1.1.8/runc.tar.xz
+Source0  : https://github.com/opencontainers/runc/releases/download/v1.1.8/runc.tar.xz
+Source1  : https://github.com/opencontainers/runc/releases/download/v1.1.8/runc.tar.xz.asc
 Summary  : CLI tool for spawning and running containers according to the OCI specification
 Group    : Development/Tools
 License  : Apache-2.0 BSD-2-Clause BSD-3-Clause MIT
@@ -45,8 +45,11 @@ license components for the runc package.
 
 
 %prep
-%setup -q -n runc-1.1.7
-cd %{_builddir}/runc-1.1.7
+%setup -q -n runc-1.1.8
+cd %{_builddir}/runc-1.1.8
+pushd ..
+cp -a runc-1.1.8 buildavx2
+popd
 
 %build
 ## build_prepend content
@@ -56,20 +59,31 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1682611613
+export SOURCE_DATE_EPOCH=1689784889
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
+export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
 make  %{?_smp_mflags}  PREFIX=/usr
 
+pushd ../buildavx2
+## build_prepend content
+unset CLEAR_DEBUG_TERSE
+## build_prepend end
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3"
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
+make  %{?_smp_mflags}  PREFIX=/usr
+popd
 
 %install
-export SOURCE_DATE_EPOCH=1682611613
+export SOURCE_DATE_EPOCH=1689784889
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/runc
 cp %{_builddir}/runc-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/runc/8ff574408142cd6bbb2a1b83302de24cb7b35e8b || :
@@ -96,13 +110,18 @@ cp %{_builddir}/runc-%{version}/vendor/github.com/vishvananda/netns/LICENSE %{bu
 cp %{_builddir}/runc-%{version}/vendor/golang.org/x/net/LICENSE %{buildroot}/usr/share/package-licenses/runc/d6a5f1ecaedd723c325a2063375b3517e808a2b5 || :
 cp %{_builddir}/runc-%{version}/vendor/golang.org/x/sys/LICENSE %{buildroot}/usr/share/package-licenses/runc/d6a5f1ecaedd723c325a2063375b3517e808a2b5 || :
 cp %{_builddir}/runc-%{version}/vendor/google.golang.org/protobuf/LICENSE %{buildroot}/usr/share/package-licenses/runc/74850a25a5319bdddc0d998eb8926c18bada282b || :
+pushd ../buildavx2/
+%make_install_v3 PREFIX=/usr
+popd
 %make_install PREFIX=/usr
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
 
 %files bin
 %defattr(-,root,root,-)
+/V3/usr/bin/runc
 /usr/bin/runc
 
 %files license
