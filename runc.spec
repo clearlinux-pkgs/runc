@@ -6,11 +6,11 @@
 # Source0 file verified with key 0x9E18AA267DDB8DB4 (asarai@suse.de)
 #
 Name     : runc
-Version  : 1.1.8
-Release  : 85
-URL      : https://github.com/opencontainers/runc/releases/download/v1.1.8/runc.tar.xz
-Source0  : https://github.com/opencontainers/runc/releases/download/v1.1.8/runc.tar.xz
-Source1  : https://github.com/opencontainers/runc/releases/download/v1.1.8/runc.tar.xz.asc
+Version  : 1.1.9
+Release  : 86
+URL      : https://github.com/opencontainers/runc/releases/download/v1.1.9/runc.tar.xz
+Source0  : https://github.com/opencontainers/runc/releases/download/v1.1.9/runc.tar.xz
+Source1  : https://github.com/opencontainers/runc/releases/download/v1.1.9/runc.tar.xz.asc
 Summary  : CLI tool for spawning and running containers according to the OCI specification
 Group    : Development/Tools
 License  : Apache-2.0 BSD-2-Clause BSD-3-Clause MIT
@@ -45,10 +45,10 @@ license components for the runc package.
 
 
 %prep
-%setup -q -n runc-1.1.8
-cd %{_builddir}/runc-1.1.8
+%setup -q -n runc-1.1.9
+cd %{_builddir}/runc-1.1.9
 pushd ..
-cp -a runc-1.1.8 buildavx2
+cp -a runc-1.1.9 buildavx2
 popd
 
 %build
@@ -59,7 +59,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1689784889
+export SOURCE_DATE_EPOCH=1691771194
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -83,7 +83,7 @@ make  %{?_smp_mflags}  PREFIX=/usr
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1689784889
+export SOURCE_DATE_EPOCH=1691771194
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/runc
 cp %{_builddir}/runc-%{version}/LICENSE %{buildroot}/usr/share/package-licenses/runc/8ff574408142cd6bbb2a1b83302de24cb7b35e8b || :
