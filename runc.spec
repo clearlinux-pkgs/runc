@@ -7,7 +7,7 @@
 #
 Name     : runc
 Version  : 1.1.9
-Release  : 86
+Release  : 87
 URL      : https://github.com/opencontainers/runc/releases/download/v1.1.9/runc.tar.xz
 Source0  : https://github.com/opencontainers/runc/releases/download/v1.1.9/runc.tar.xz
 Source1  : https://github.com/opencontainers/runc/releases/download/v1.1.9/runc.tar.xz.asc
